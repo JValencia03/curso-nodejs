@@ -16,7 +16,7 @@ Content-Type: application/json
     "title": "The Godfather",
     "year": 1975,
     "director": "Francis Ford Coppola",
-    "genre": ["crime", "drama"],
+    "genre": ["Crime", "Drama"],
     "duration": 175,
     "poster": "https://pics.filmaffinity.com/El_padrino-757154190-large.jpg"
 }

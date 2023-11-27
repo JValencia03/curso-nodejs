@@ -20,3 +20,6 @@ Content-Type: application/json
     "duration": 175,
     "poster": "https://pics.filmaffinity.com/El_padrino-757154190-large.jpg"
 }
+
+PATCH http://localhost:1234/movies/c6162d60-a4bd-4893-a0bb-3c52bdd8af3b
+Content-Type: application/json

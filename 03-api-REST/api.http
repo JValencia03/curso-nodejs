@@ -21,5 +21,10 @@ Content-Type: application/json
     "poster": "https://pics.filmaffinity.com/El_padrino-757154190-large.jpg"
 }
 
-PATCH http://localhost:1234/movies/c6162d60-a4bd-4893-a0bb-3c52bdd8af3b
+### Editar una parte de una película
+PATCH http://localhost:1234/movies/dcdd0fad-a94c-4810-8acc-5f108d3b18c3
 Content-Type: application/json
+
+{
+    "year": 1909
+}

@@ -8,7 +8,7 @@ const movieSchema = z.object({
   year: z.number().int().min(1900).max(2025),
   director: z.string(),
   duration: z.number().int().positive(),
-  rate: z.number().min(0).max(10).optional(),
+  rate: z.number().min(0).max(10).default(1),
   poster: z.string().url({
     message: 'Poster must be a valid URL'
   }),
@@ -21,10 +21,15 @@ const movieSchema = z.object({
   )
 })
 
-function validateMovie (object) {
-  return movieSchema.safeParse(object) // El safeParse me dice si hay un error o hay datos, para arreglar con un if
+function validateMovie (input) {
+  return movieSchema.safeParse(input) // El safeParse me dice si hay un error o hay datos, para arreglar con un if
+}
+
+function validatePartialMovie (input) {
+  return movieSchema.partial().safeParse(input)
 }
 
 module.exports = {
-  validateMovie
+  validateMovie,
+  validatePartialMovie
 }

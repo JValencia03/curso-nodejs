@@ -14,6 +14,8 @@ app.get('/', (req, res) => {
 // Cada recurso se identifica con una URL, en este caso será movies
 // O sea que cada recurso que sea MOVIES se identificará con /movies
 app.get('/movies', (req, res) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:8080') // Solución del CORS
+
   // Desde la request podemos acceder a la query
   // En este ejemplo la query sería genre (http://localhost:1234/movies?genre=Action)
   const { genre } = req.query

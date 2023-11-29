@@ -7,6 +7,13 @@ const app = express()
 app.use(express.json())
 app.disable('x-powered-by')
 
+const ACCEPTED_ORIGINS = [
+  'http://localhost:8080',
+  'http://localhost:3000',
+  'https://movies.com',
+  'https://jfelmejor6026.com'
+]
+
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to moviesJSON' })
 })
@@ -14,7 +21,11 @@ app.get('/', (req, res) => {
 // Cada recurso se identifica con una URL, en este caso será movies
 // O sea que cada recurso que sea MOVIES se identificará con /movies
 app.get('/movies', (req, res) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:8080') // Solución del CORS
+  const origin = req.header('origin')
+  // En caso de que el puerto sea el mismo, no me va a devolver la cabecera origin.
+  if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+    res.header('Access-Control-Allow-Origin', ACCEPTED_ORIGINS) // Solución del CORS
+  }
 
   // Desde la request podemos acceder a la query
   // En este ejemplo la query sería genre (http://localhost:1234/movies?genre=Action)

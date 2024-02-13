@@ -10,6 +10,7 @@ app.disable('x-powered-by')
 const ACCEPTED_ORIGINS = [
   'http://localhost:8080',
   'http://localhost:3000',
+  'http://localhost:1234',
   'https://movies.com',
   'https://jfelmejor6026.com'
 ]
@@ -22,9 +23,12 @@ app.get('/', (req, res) => {
 // O sea que cada recurso que sea MOVIES se identificará con /movies
 app.get('/movies', (req, res) => {
   const origin = req.header('origin')
-  // En caso de que el puerto sea el mismo, no me va a devolver la cabecera origin.
+  // /* En caso de que el puerto sea el mismo, no me va a devolver la cabecera origin.
+  //     * Cuando la petición es del mismo origin
+  //     * http://localhost:1234 --> http://localhost:1234
+  // */
   if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
-    res.header('Access-Control-Allow-Origin', ACCEPTED_ORIGINS) // Solución del CORS
+    res.header('Access-Control-Allow-Origin', origin) // Solución del CORS
   }
 
   // Desde la request podemos acceder a la query
@@ -75,6 +79,19 @@ app.post('/movies', (req, res) => {
 
 // Final del POST ☝🏻
 
+app.delete('/movies/:id', (req, res) => {
+  const { id } = req.params
+  const movieIndex = movies.findIndex(movie => movie.id === id)
+
+  if (movieIndex === -1) {
+    return res.status(404).json({ message: 'Movie not found' })
+  }
+
+  movies.splice(movieIndex, 1)
+
+  return res.json({ message: 'Movie deleted' })
+})
+
 app.patch('/movies/:id', (req, res) => {
   const result = validatePartialMovie(req.body)
   if (!result.success) {
@@ -94,6 +111,17 @@ app.patch('/movies/:id', (req, res) => {
   movies[movieIndex] = updateMovie
 
   return res.json(updateMovie)
+})
+
+app.options('/movies/:id', (req, res) => {
+  const origin = req.header('origin')
+
+  if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+    res.header('Access-Control-Allow-Origin', origin)
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE')
+  }
+
+  res.send(200)
 })
 
 const PORT = process.env.PORT ?? 1234
